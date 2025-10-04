@@ -85,7 +85,12 @@ Your browser should automatically open to http://localhost:3000, where you can s
 ## Final Visualization
 Here is an example of the proof of irrationality of sqrt(2).
 
-<img width="1898" height="1452" alt="Screenshot 2025-10-03 at 16-43-31 React App" src="https://github.com/user-attachments/assets/b897edf3-b461-42c4-b174-69b49240e62d" />
+<img width="1903" height="1351" alt="Screenshot 2025-10-03 at 18-19-47 React App" src="https://github.com/user-attachments/assets/b0237eef-b3b2-4525-995e-4412e25693c4" />
+
+And another example of the proof of the Pythagorean Theorem:
+
+<img width="1903" height="1351" alt="Screenshot 2025-10-03 at 18-26-45 React App" src="https://github.com/user-attachments/assets/2b06fd4f-5854-48e2-9ed6-48ac7b404f48" />
+
 
 ---
 
