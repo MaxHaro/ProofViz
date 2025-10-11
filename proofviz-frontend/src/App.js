@@ -10,6 +10,7 @@
  * proof text and graph data, and orchestrates the API call to the backend.
  */
 
+import './App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import GraphDisplay from './GraphDisplay';
