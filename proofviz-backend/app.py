@@ -10,16 +10,16 @@
 #   with the Google Gemini API, and returns a structured JSON graph.
 # =============================================================================
 
-import os #A standard Python library to interact with the operating system, which we use to read environment variables.
-import json #For working with JSON data, the standard format for web APIs.
-import google.generativeai as genai #The official Google library to communicate with the Gemini API.
-from dotenv import load_dotenv #A library to load secret keys (like our API key) from a separate .env file.
-from flask import Flask, request, jsonify #The core library for our web server. Flask creates the app, request handles incoming data from the frontend, and jsonify formats our Python dictionaries into proper JSON responses.
-from flask_cors import CORS #An extension for Flask that handles a browser security feature called CORS.
+import os
+import json
+import google.generativeai as genai
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-# Create the Flask web server application
-app = Flask(__name__) #This creates the main application object. __name__ is a special Python variable that helps Flask know where to find other files.
-CORS(app) #This is a crucial security and functionality line. It allows our React frontend (running on localhost:3000) to make requests to our backend (running on localhost:5000). Without it, web browsers would block the requests for security reasons.
+
+app = Flask(__name__)
+CORS(app)
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -29,13 +29,12 @@ except KeyError:
     print("ERROR: GEMINI_API_KEY not found in environment variables.")
     exit()
 
-# We specify methods=['POST'] because we will be sending data (the proof) to the server.
-@app.route('/process-proof', methods=['POST']) # This is a Flask "decorator" that creates our API endpoint. It tells Flask that any time a POST request comes to the URL /process-proof, it should run the process_proof_endpoint function.
-# This is our main API endpoint. We chose the POST method because the client needs to send a body of data—the LaTeX proof—to the server for processing.
+@app.route('/process-proof', methods=['POST']) 
+
 def process_proof_endpoint():
     # Get the JSON data sent from the frontend
-    data = request.get_json() #Parses the incoming request body from JSON into a Python dictionary.
-    if not data or 'proof' not in data: # This is input validation. It checks if the data exists and has the required 'proof' key.
+    data = request.get_json()
+    if not data or 'proof' not in data: 
         # Return an error response if the request is badly formatted
         return jsonify({"error": "Invalid request: 'proof' key is missing."}), 400
 
