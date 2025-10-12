@@ -82,15 +82,18 @@ npm start
 Your browser should automatically open to http://localhost:3000, where you can see the application running.
 
 ---
-## Final Visualization
-Here is an example of the proof of irrationality of sqrt(2).
+## Visualization in Action
+The application renders the complete logical structure of a proof. Here is the visualization for the proof of the irrationality of sqrt(2)​:
 
-<img width="1903" height="1351" alt="Screenshot 2025-10-03 at 18-19-47 React App" src="https://github.com/user-attachments/assets/b0237eef-b3b2-4525-995e-4412e25693c4" />
+<img width="699" height="656" alt="image" src="https://github.com/user-attachments/assets/3a511923-44c6-4ee7-822d-1a2cce53c677" />
 
-And another example of the proof of the Pythagorean Theorem:
 
-<img width="1903" height="1351" alt="Screenshot 2025-10-03 at 18-26-45 React App" src="https://github.com/user-attachments/assets/2b06fd4f-5854-48e2-9ed6-48ac7b404f48" />
 
+To clarify complex arguments, you can click on any node. This interactive feature highlights its direct dependencies, making it easy to trace the logic step-by-step, especially in denser proofs with multiple connections. 
+
+<img width="698" height="651" alt="image" src="https://github.com/user-attachments/assets/9e61aef6-e253-4acf-9793-78121cf70fac" />
+
+For example if we click on N7, we see that it highlights its direct dependencies: N3, N6 and N8.
 
 ---
 
