@@ -16,16 +16,14 @@ import ReactFlow, { useNodesState, useEdgesState, Background, Controls } from 'r
 import MathNode from './MathNode';
 import 'reactflow/dist/style.css';
 
-// --- NEW CUSTOM LAYOUT FUNCTION (Replaces Dagre) ---
-
 // Define our node dimensions
 const nodeWidth = 250;
-const nodeHeight = 100; // You might need to adjust this
-const horizontalSpacing = 50;
+const nodeHeight = 100;
+const horizontalSpacing = 1000;
 const verticalSpacing = 50;
 
 const getLayoutedElements = (nodes, edges) => {
-  // 1. Create data structures to hold graph info
+  // Create data structures to hold graph info
   const adjList = new Map(); // (nodeId) => [childId, childId, ...]
   const inDegree = new Map(); // (nodeId) => number of incoming edges
 
@@ -43,11 +41,11 @@ const getLayoutedElements = (nodes, edges) => {
     inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
   });
 
-  // 2. Find all root nodes (in-degree === 0)
+  // Find all root nodes (in-degree === 0)
   const rootNodes = nodes.filter((node) => inDegree.get(node.id) === 0);
 
-  // 3. Perform a layered layout (BFS-based topological sort)
-  const layers = new Map();     // (nodeId) => layerNumber
+  // Perform a layered layout (BFS-based topological sort)
+  const layers = new Map(); // (nodeId) => layerNumber
   const layerCounts = new Map(); // (layerNumber) => count of nodes in this layer
   const queue = [];
 
@@ -90,7 +88,7 @@ const getLayoutedElements = (nodes, edges) => {
     });
   }
 
-  // 4. Center each layer horizontally
+  // Center each layer horizontally
   const maxLayerWidth = Math.max(...Array.from(layerCounts.values()));
   const totalWidth = maxLayerWidth * nodeWidth + (maxLayerWidth - 1) * horizontalSpacing;
 
@@ -105,7 +103,6 @@ const getLayoutedElements = (nodes, edges) => {
 
   return { nodes, edges };
 };
-// --- END OF LAYlayout FUNCTION ---
 
 const nodeTypes = { mathNode: MathNode };
 
@@ -118,7 +115,7 @@ const GraphDisplay = ({ graphData }) => {
     setSelectedNodeId(prevSelectedId => (prevSelectedId === node.id ? null : node.id));
   }, []);
 
-  // Hook 1: Builds the initial graph and CALCULATES LAYOUT
+  // Hook 1: Builds the initial graph and calculates layout.
   useLayoutEffect(() => {
     if (!graphData || !graphData.nodes) return;
 
@@ -127,7 +124,7 @@ const GraphDisplay = ({ graphData }) => {
       id: String(node.id),
       data: { label: `(${node.id}) ${node.label}` },
       type: 'mathNode',
-      position: { x: 0, y: 0 }, // Will be set by our algorithm
+      position: { x: 0, y: 0 }, 
     }));
 
     let initialEdges = graphData.edges.map((edge, index) => ({
@@ -150,7 +147,6 @@ const GraphDisplay = ({ graphData }) => {
 
   // Hook 2: Handles highlighting (This hook remains the same)
   useEffect(() => {
-    // ... (Your highlighting logic doesn't need to change)
     setNodes((currentNodes) =>
       currentNodes.map((node) => {
         const isHighlighting = selectedNodeId !== null;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Handle, Position } from 'reactflow';
 import Latex from 'react-latex-next';
-import 'katex/dist/katex.min.css'; // This is still needed for the styles
+import 'katex/dist/katex.min.css'; 
 
 const MathNode = ({ data }) => {
   return (
@@ -15,7 +15,6 @@ const MathNode = ({ data }) => {
     }}>
       <Handle type="target" position={Position.Top} />
       <div>
-        {/* We use the <Latex> component and $...$ for inline math */}
         <Latex>{data.label}</Latex>
       </div>
       <Handle type="source" position={Position.Bottom} />
