@@ -45,7 +45,7 @@ def process_proof_endpoint():
     Your task is to deconstruct a mathematical proof written in LaTeX into a directed acyclic graph (DAG).
     Represent this graph in a JSON format with two main keys: "nodes" and "edges".
 
-    - **Nodes**: Each node must have a unique `id`, a `label` (concise summary), and a `type` ('assumption', 'deduction', 'contradiction', or 'conclusion').
+    - **Nodes**: Each node must have a unique `id`, a `label` (concise summary), and a `type` ('assumption', 'deduction', 'contradiction', or 'conclusion'). **In the `label` field, use LaTeX syntax (e.g., $...$) for any mathematical expressions.**
     - **Edges**: Each edge must have a `source` (the id of the starting node) and a `target` (the id of the ending node).
 
     Here is the proof you need to analyze:

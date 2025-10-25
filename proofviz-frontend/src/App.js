@@ -14,6 +14,7 @@ import './App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import GraphDisplay from './GraphDisplay';
+import 'katex/dist/katex.min.css';
 
 function App() {
   const [proofText, setProofText] = useState('');
