@@ -14,7 +14,7 @@ import './App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import GraphDisplay from './GraphDisplay';
-import 'katex/dist/katex.min.css';
+import ConceptsWindow from './ConceptsWindow';
 
 function App() {
   const [proofText, setProofText] = useState('');
@@ -25,13 +25,13 @@ function App() {
   const handleSubmit = async () => {
     setIsLoading(true);
     setError(null);
-    setGraphData(null); // Clear previous graph
+    setGraphData(null); 
     
     try {
       const response = await axios.post('http://localhost:5000/process-proof', {
         proof: proofText
       });
-      setGraphData(response.data);
+      setGraphData(response.data); 
     } catch (err) {
       console.error("Error fetching data from backend:", err);
       setError("Failed to generate visualization. Please check the proof or try again.");
@@ -61,8 +61,13 @@ function App() {
 
         {error && <p style={{color: 'red', marginTop: '15px'}}>{error}</p>}
         
-        
-        {graphData && <GraphDisplay graphData={graphData} />}
+        {graphData && (
+          <div className="viz-container">
+            <GraphDisplay graphData={graphData} />
+            
+            {graphData.key_concepts && <ConceptsWindow concepts={graphData.key_concepts} />}
+          </div>
+        )}
 
       </header>
     </div>

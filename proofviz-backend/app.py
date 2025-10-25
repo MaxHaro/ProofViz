@@ -42,16 +42,24 @@ def process_proof_endpoint():
 
     prompt = f"""
     You are a specialized AI assistant for mathematical logic and visualization.
-    Your task is to deconstruct a mathematical proof written in LaTeX into a directed acyclic graph (DAG).
-    Represent this graph in a JSON format with two main keys: "nodes" and "edges".
+    Your task is to deconstruct a mathematical proof written in LaTeX into a directed acyclic graph (DAG) and identify the key definitions, theorems, or axioms used to justify the steps.
+
+    Represent your output as a single JSON object. This object must have three main keys: "nodes", "edges", and "key_concepts".
 
     1.  **Nodes**: Each node must have a unique `id`, a `label`, and a `type`.
-        * **id**: This MUST be a string in the format "N1", "N2", "N3", etc., incrementing for each logical step.
-        * **label**: This MUST be a concise summary of the logical step. **DO NOT include your own numbering** (like "(1)" or "Step 1:") in the label text, as the frontend will add it.
-        * **type**: Must be one of 'assumption', 'deduction', 'contradiction', or 'conclusion'.
-        * **Labeling Example**: For the first step, the JSON should be: {{"id": "N1", "label": "Assume for contradiction that $\sqrt{2}$ is rational.", "type": "assumption"}}
+        * **id**: Must be a string "N1", "N2", "N3", etc.
+        * **label**: Must be a concise summary. DO NOT include numbering like "(1)".
+        * **type**: Must be 'assumption', 'deduction', 'contradiction', or 'conclusion'.
+        * **Labeling Example**: {{"id": "N1", "label": "Assume for contradiction that $\sqrt{2}$ is rational.", "type": "assumption"}}
 
-    2.  **Edges**: Each edge must have a `source` (the "id" of the starting node, e.g., "N1") and a `target` (the "id" of the ending node, e.g., "N2").
+    2.  **Edges**: Each edge must have a `source` ("id") and a `target` ("id").
+
+    3.  **key_concepts**: You must add this third key at the top level.
+        * It must be an array of objects. Each object must have "name" and "description".
+        * **Include only definitions, theorems, or axioms that are NECESSARY to justify a specific deduction step (an edge) in the proof.** Do not include general concepts not directly applied.
+        * **For Definitions**: The "name" should be the term being defined (e.g., "Definition of Absolute Value") and the "description" should be the definition used in the proof (e.g., "$|x| = x$ if $x \ge 0$, and $|x| = -x$ if $x < 0$").
+        * Any mathematical notation in "name" or "description" MUST be enclosed in $...$ delimiters.
+        * If no specific concepts justify the steps, return an empty array [].
 
     Here is the proof you need to analyze:
 

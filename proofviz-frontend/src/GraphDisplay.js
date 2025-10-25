@@ -134,7 +134,6 @@ const GraphDisplay = ({ graphData }) => {
       animated: true,
     }));
 
-    // Call our new layout function
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
       initialNodes,
       initialEdges
@@ -145,7 +144,7 @@ const GraphDisplay = ({ graphData }) => {
     setSelectedNodeId(null);
   }, [graphData, setNodes, setEdges]);
 
-  // Hook 2: Handles highlighting (This hook remains the same)
+  // Hook 2: Handles highlighting
   useEffect(() => {
     setNodes((currentNodes) =>
       currentNodes.map((node) => {
@@ -183,7 +182,7 @@ const GraphDisplay = ({ graphData }) => {
   }, [selectedNodeId, graphData, setNodes, setEdges]);
 
   return (
-    <div style={{ height: '70vh', width: '90%', border: '1px solid #61dafb', marginTop: '20px' }}>
+    <div style={{ height: '100vh', width: '90%', border: '1px solid #61dafb', marginTop: '1px' , borderRadius: '8px'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
