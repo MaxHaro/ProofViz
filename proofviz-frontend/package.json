@@ -10,6 +10,7 @@
     "axios": "^1.12.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-latex-next": "^3.0.0",
     "react-scripts": "5.0.1",
     "reactflow": "^11.11.4",
     "web-vitals": "^2.1.4"

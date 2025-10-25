@@ -45,8 +45,13 @@ def process_proof_endpoint():
     Your task is to deconstruct a mathematical proof written in LaTeX into a directed acyclic graph (DAG).
     Represent this graph in a JSON format with two main keys: "nodes" and "edges".
 
-    - **Nodes**: Each node must have a unique `id`, a `label` (concise summary), and a `type` ('assumption', 'deduction', 'contradiction', or 'conclusion').
-    - **Edges**: Each edge must have a `source` (the id of the starting node) and a `target` (the id of the ending node).
+    1.  **Nodes**: Each node must have a unique `id`, a `label`, and a `type`.
+        * **id**: This MUST be a string in the format "N1", "N2", "N3", etc., incrementing for each logical step.
+        * **label**: This MUST be a concise summary of the logical step. **DO NOT include your own numbering** (like "(1)" or "Step 1:") in the label text, as the frontend will add it.
+        * **type**: Must be one of 'assumption', 'deduction', 'contradiction', or 'conclusion'.
+        * **Labeling Example**: For the first step, the JSON should be: {{"id": "N1", "label": "Assume for contradiction that $\sqrt{2}$ is rational.", "type": "assumption"}}
+
+    2.  **Edges**: Each edge must have a `source` (the "id" of the starting node, e.g., "N1") and a `target` (the "id" of the ending node, e.g., "N2").
 
     Here is the proof you need to analyze:
 
