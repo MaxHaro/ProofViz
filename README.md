@@ -10,7 +10,7 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 
 * **AI-Powered Analysis**: Uses Google Gemini to deconstruct the logical steps of a mathematical proof.
 * **Interactive Graph Visualization**: Renders proofs as dynamic graphs where you can drag nodes, pan, and zoom.
-* **LaTeX Support**: Accepts standard LaTeX for mathematical notation and formatting.
+* **LaTeX Rendering**: Uses react-latex-next to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$) beautifully inside the graph nodes.
 * **Full-Stack Architecture**: Built with a modern React frontend and a robust Python/Flask backend.
 
 ---
@@ -20,6 +20,7 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 * **Frontend**:
     * **React**: A component-based library for building user interfaces.
     * **React Flow**: A powerful library for creating node-based graphs.
+    * **react-latex-next**: A lightweight library for rendering LaTeX.
     * **Axios**: For making HTTP requests to the backend API.
 * **Backend**:
     * **Python**: The core language for the server and AI logic.
@@ -74,7 +75,9 @@ Next in a separate terminal window, set up and run the React frontend.
 cd proofviz-frontend
 
 # 2. Install the required npm packages
-npm install
+# The --legacy-peer-deps flag is required to resolve
+# dependency conflicts with the new version of React.
+npm install --legacy-peer-deps
 
 # 3. Start the React development server
 npm start
@@ -112,6 +115,6 @@ For example if we click on N7, we see that it highlights its direct dependencies
 
 ## Future Improvements
 
-* **Advanced Graph Layouts:** Implement a force-directed layout algorithm for a more intuitive visual flow.
+* **Key Concepts Window:** Add a new UI panel that lists and explains key theorems or definitions used in the proof.
 * **Logical Flaw Detection:** Enhance the AI prompt to identify and highlight potential errors or missing steps in a proof.
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
