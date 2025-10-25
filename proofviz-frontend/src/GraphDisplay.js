@@ -17,10 +17,10 @@ import MathNode from './MathNode';
 import 'reactflow/dist/style.css';
 
 // Define our node dimensions
-const nodeWidth = 250;
+const nodeWidth = 500;
 const nodeHeight = 100;
-const horizontalSpacing = 1000;
-const verticalSpacing = 50;
+const horizontalSpacing = 100;
+const verticalSpacing = 100;
 
 const getLayoutedElements = (nodes, edges) => {
   // Create data structures to hold graph info
@@ -192,6 +192,7 @@ const GraphDisplay = ({ graphData }) => {
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         fitView
+        minZoom={0.2}
       >
         <Background />
         <Controls />
