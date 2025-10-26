@@ -40,26 +40,30 @@ def process_proof_endpoint():
 
     latex_proof = data['proof']
 
-    prompt = f"""
+    prompt = rf"""
     You are a specialized AI assistant for mathematical logic and visualization.
     Your task is to deconstruct a mathematical proof written in LaTeX into a directed acyclic graph (DAG) and identify the key definitions, theorems, or axioms used to justify the steps.
 
-    Represent your output as a single JSON object. This object must have three main keys: "nodes", "edges", and "key_concepts".
+    Represent your output as a single JSON object. This object MUST have three main keys: "nodes", "edges", and "key_concepts". Adhere STRICTLY to the format specified below.
 
     1.  **Nodes**: Each node must have a unique `id`, a `label`, and a `type`.
-        * **id**: Must be a string "N1", "N2", "N3", etc.
-        * **label**: Must be a concise summary. DO NOT include numbering like "(1)".
-        * **type**: Must be 'assumption', 'deduction', 'contradiction', or 'conclusion'.
-        * **Labeling Example**: {{"id": "N1", "label": "Assume for contradiction that $\sqrt{2}$ is rational.", "type": "assumption"}}
+        * **id**: REQUIRED string format "N1", "N2", "N3", etc.
+        * **label**: REQUIRED concise summary. DO NOT include numbering like "(1)".
+        * **type**: REQUIRED one of 'assumption', 'deduction', 'contradiction', 'conclusion'.
+        * **Example Node**: {{"id": "N1", "label": "Assume for contradiction that $\sqrt{{2}}$ is rational.", "type": "assumption"}}
 
     2.  **Edges**: Each edge must have a `source` ("id") and a `target` ("id").
 
-    3.  **key_concepts**: You must add this third key at the top level.
-        * It must be an array of objects. Each object must have "name" and "description".
-        * **Include only definitions, theorems, or axioms that are NECESSARY to justify a specific deduction step (an edge) in the proof.** Do not include general concepts not directly applied.
-        * **For Definitions**: The "name" should be the term being defined (e.g., "Definition of Absolute Value") and the "description" should be the definition used in the proof (e.g., "$|x| = x$ if $x \ge 0$, and $|x| = -x$ if $x < 0$").
-        * Any mathematical notation in "name" or "description" MUST be enclosed in $...$ delimiters.
-        * If no specific concepts justify the steps, return an empty array [].
+    3.  **key_concepts**: You MUST add this third key at the top level.
+        * It must be an array of objects. Each object MUST have keys "name" and "description".
+        * Include only definitions, theorems, or axioms NECESSARY to justify a specific deduction step (an edge) in the proof.
+        * **CRITICAL Instruction**: Within the "name" and "description" strings, ALL mathematical notation (variables, symbols, expressions, commands like `\lim`, `\sqrt`, `\in`, etc.) MUST be enclosed in $...$ delimiters for inline math.
+        * **DO NOT** output raw LaTeX commands without the $...$ delimiters.
+        * **Correct Delimiter Examples**:
+            * `{{"name": "Definition of Even Number", "description": "An integer $n$ is even if $n = 2k$ for some integer $k$."}}`
+            * `{{"name": "Archimedean Property", "description": "For any real number $x$, there exists an integer $n$ such that $n > x$."}}`
+            * `{{"name": "GCD Definition", "description": "Integers $a$ and $b$ are coprime if $\gcd(a, b) = 1$."}}`
+        * If no concepts are found, return an empty array `[]`.
 
     Here is the proof you need to analyze:
 
@@ -67,7 +71,7 @@ def process_proof_endpoint():
     {latex_proof}
     --- PROOF END ---
 
-    Please provide ONLY the JSON object representing this proof's logical structure. Do not include any other text or explanations.
+    Provide ONLY the JSON object. Do not include any text before or after the JSON.
     """
 
     try:

@@ -182,7 +182,7 @@ const GraphDisplay = ({ graphData }) => {
   }, [selectedNodeId, graphData, setNodes, setEdges]);
 
   return (
-    <div style={{ height: '100vh', width: '90%', border: '1px solid #61dafb', marginTop: '1px' , borderRadius: '8px'}}>
+    <div style={{ height: '98vh', width: '90%', border: '1px solid #61dafb', marginTop: '1px' , borderRadius: '8px', marginBottom: '50px'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

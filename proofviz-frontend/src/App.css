@@ -66,7 +66,7 @@
 }
 
 .viz-container > div:first-child {
-  flex: 0 1 70%;
+  flex: 0 1 60%;
 }
 
 .viz-container .katex {
@@ -74,13 +74,13 @@
 }
 
 .concepts-window {
-  flex: 0 1 30%; 
+  flex: 0 1 40%; 
   background-color: #3e4451;
   border: 1px solid #61dafb;
   border-radius: 8px;
   padding: 15px;
   text-align: left;
-  height: 97vh; 
+  height: 95vh; 
   overflow-y: auto; 
 }
 
@@ -110,38 +110,38 @@
 
 .concepts-window li span {
   color: #c9c9c9;
-  font-size: 0.8em;
+  font-size: 0.96em;
   line-height: 0.5;
 }
 
+/* Base setting for the entire KaTeX block inside the window */
+.concepts-window .katex {
+  font-size: 1.3em !important; 
+}
 
+/* Target ALL math elements and force them to use the <li>'s size */
+.concepts-window .katex .mord, 
+.concepts-window .katex .mathnormal,
+.concepts-window .katex .mrel, 
+.concepts-window .katex .mbin, 
+.concepts-window .katex .mn,   
+.concepts-window .katex .mpunct {
+   font-size: inherit !important;
+}
+
+/* Target specific math text elements inside the description span */
+.concepts-window li span .katex .mord,
+.concepts-window li span .katex .mathnormal,
+.concepts-window li span .katex .mrel,
+.concepts-window li span .katex .mbin,
+.concepts-window li span .katex .mn,
+.concepts-window li span .katex .mpunct {
+   font-size: 0.9em !important; 
+}
+
+/* Handle the Subscript/Superscript shrinking */
+/* This is the rule that ensures 's_n' renders correctly without shrinking the 'n'. */
 .concepts-window .katex .sizing.reset-size6 .mord,
 .concepts-window .katex .sizing.reset-size6 .mathnormal {
-    font-size: 3.8em !important; 
-    vertical-align: -0.3em !important; 
+    font-size: 1.0em !important; 
 }
-
-
-.concepts-window .katex .mord,
-.concepts-window .katex .mathnormal {
-   font-size: 1.4em !important; 
-}
-
-.concepts-window .katex .mrel {
-   font-size: 1.4em;
-}
-
-.concepts-window .katex .mbin {
-   font-size: 1.4em !important;
-}
-
-.concepts-window .katex {
-   font-size: 1.28em !important;
-}
-
-.concepts-window .katex .mn,
-.concepts-window .katex .mpunct {
-   font-size: 1.3em !important; 
-}
-
-
