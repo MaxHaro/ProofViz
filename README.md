@@ -2,6 +2,7 @@
 
 ProofViz is a full-stack web application that transforms dense LaTeX mathematical proofs into clear, interactive logical graphs. This educational tool uses an AI backend to parse the proof's structure and a React frontend to visualize the dependencies, helping students and mathematicians demystify the flow of complex arguments.
 
+<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/ac3be1a4-26d5-4125-bf22-ff65c96d8810" />
 
 
 ---
@@ -9,8 +10,10 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 ## Features
 
 * **AI-Powered Analysis**: Uses Google Gemini to deconstruct the logical steps of a mathematical proof.
+* **Key Concepts Extraction**: Automatically identifies and lists key definitions, theorems, or axioms used to justify steps in the proof.
 * **Interactive Graph Visualization**: Renders proofs as dynamic graphs where you can drag nodes, pan, and zoom.
-* **LaTeX Rendering**: Uses react-latex-next to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$) beautifully inside the graph nodes.
+* **LaTeX Rendering**: Uses react-latex-next to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$, etc...) beautifully inside the graph nodes.
+* **Hierarchical Layout**: Automatically arranges the graph in a top-down, layer-based tree, so logical dependencies flow clearly from assumptions to conclusions.
 * **Full-Stack Architecture**: Built with a modern React frontend and a robust Python/Flask backend.
 
 ---
@@ -86,17 +89,15 @@ Your browser should automatically open to http://localhost:3000, where you can s
 
 ---
 ## Visualization in Action
-The application renders the complete logical structure of a proof. Here is the visualization for the proof of the irrationality of sqrt(2)​:
+The application renders the complete logical structure of a proof, automatically arranging it into a clean, hierarchical layout and rendering all LaTeX. It also extracts and displays key concepts used.
 
-<img width="699" height="656" alt="image" src="https://github.com/user-attachments/assets/3a511923-44c6-4ee7-822d-1a2cce53c677" />
-
-
+<img width="1832" height="950" alt="image" src="https://github.com/user-attachments/assets/c92f7c4a-9d4b-450e-85bf-ac33689f0478" />
 
 To clarify complex arguments, you can click on any node. This interactive feature highlights its direct dependencies, making it easy to trace the logic step-by-step, especially in denser proofs with multiple connections. 
 
-<img width="698" height="651" alt="image" src="https://github.com/user-attachments/assets/9e61aef6-e253-4acf-9793-78121cf70fac" />
+<img width="1052" height="935" alt="image" src="https://github.com/user-attachments/assets/aff7518d-37a0-491f-ac40-784ee8d5742e" />
 
-For example if we click on N7, we see that it highlights its direct dependencies: N3, N6 and N8.
+For example if we click on N13, we see that it highlights its direct dependencies: N6, N12 and N14.
 
 ---
 
@@ -109,12 +110,12 @@ For example if we click on N7, we see that it highlights its direct dependencies
 
 4. Click the "Visualize Proof" button.
 
-5. An interactive graph of the proof's logical structure will appear below. You can drag the nodes, pan the view with your mouse, and use the controls to zoom.
+5. An interactive, logically-structured graph and a list of key concepts will appear. Interact with the graph: Drag nodes, pan, zoom, and click nodes to highlight dependencies.
 
 ---
 
 ## Future Improvements
 
-* **Key Concepts Window:** Add a new UI panel that lists and explains key theorems or definitions used in the proof.
+* **Concept Linking:** Link the key concepts displayed to the specific nodes/edges in the graph where they are applied.
 * **Logical Flaw Detection:** Enhance the AI prompt to identify and highlight potential errors or missing steps in a proof.
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
