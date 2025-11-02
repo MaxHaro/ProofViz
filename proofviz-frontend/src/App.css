@@ -5,8 +5,7 @@
  * Date: October 3, 2025
  *
  * Description:
- * Stylesheet for the main App component. It provides the dark theme,
- * layout, and styling for the text area, button, and graph container.
+ * Stylesheet for the main App component. 
  * ============================================================================ */
 
 .App {
@@ -114,12 +113,10 @@
   line-height: 0.5;
 }
 
-/* Base setting for the entire KaTeX block inside the window */
 .concepts-window .katex {
   font-size: 1.3em !important; 
 }
 
-/* Target ALL math elements and force them to use the <li>'s size */
 .concepts-window .katex .mord, 
 .concepts-window .katex .mathnormal,
 .concepts-window .katex .mrel, 
@@ -129,7 +126,6 @@
    font-size: inherit !important;
 }
 
-/* Target specific math text elements inside the description span */
 .concepts-window li span .katex .mord,
 .concepts-window li span .katex .mathnormal,
 .concepts-window li span .katex .mrel,
@@ -139,9 +135,69 @@
    font-size: 0.9em !important; 
 }
 
-/* Handle the Subscript/Superscript shrinking */
-/* This is the rule that ensures 's_n' renders correctly without shrinking the 'n'. */
 .concepts-window .katex .sizing.reset-size6 .mord,
 .concepts-window .katex .sizing.reset-size6 .mathnormal {
     font-size: 1.0em !important; 
+}
+
+.math-node-label {
+  padding: 5px;
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+}
+
+.validate-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #5a67d8; 
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.validate-button:hover {
+  background-color: #434190;
+}
+
+.validate-button:disabled {
+  background-color: #4a4e69;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.warning-icon {
+  position: absolute;
+  top: -10px;
+  left: -15px;
+  font-size: 15px;
+  cursor: help;
+  z-index: 10;
+  background: white;
+  border-radius: 50%;
+  border-color: black;
+  border-style: ridge;
+  border-width: 3px;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 16px; 
+}
+
+.validate-button:disabled {
+  background-color: #4a4e69;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+.validate-button.success {
+  background-color: #28a745;
+  color: white;
 }
