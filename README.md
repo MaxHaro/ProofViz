@@ -2,7 +2,8 @@
 
 ProofViz is a full-stack web application that transforms dense LaTeX mathematical proofs into clear, interactive logical graphs. This educational tool uses an AI backend to parse the proof's structure and a React frontend to visualize the dependencies, helping students and mathematicians demystify the flow of complex arguments.
 
-<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/ac3be1a4-26d5-4125-bf22-ff65c96d8810" />
+<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/2a01836c-2cf8-43a9-a265-203f34ca5bce" />
+
 
 
 ---
@@ -10,6 +11,7 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 ## Features
 
 * **AI-Powered Analysis**: Uses Google Gemini to deconstruct the logical steps of a mathematical proof.
+* **Logical Flaw Detection**: A separate "Validate Logic" button calls a specialized AI verifier to analyze the proof for logical gaps or errors. Invalid steps are visually flagged (⚠️), and valid proofs are given a success confirmation (✔).
 * **Key Concepts Extraction**: Automatically identifies and lists key definitions, theorems, or axioms used to justify steps in the proof.
 * **Interactive Graph Visualization**: Renders proofs as dynamic graphs where you can drag nodes, pan, and zoom.
 * **LaTeX Rendering**: Uses react-latex-next to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$, etc...) beautifully inside the graph nodes.
@@ -100,6 +102,13 @@ To clarify complex arguments, you can click on any node. This interactive featur
 For example if we click on N13, we see that it highlights its direct dependencies: N6, N12 and N14.
 
 ---
+## Proof Logic Validation
+The app also features a validation engine. After visualizing, you can click "Validate Logic" to have the AI analyze each step. Any invalid deductions are instantly flagged with a red border and a warning icon, with a tooltip explaining the flaw. For example, the app correctly identified N5 as a problematic node in the flawed proof that 1 = 2:
+
+<img width="973" height="643" alt="image" src="https://github.com/user-attachments/assets/1df359ca-10c0-47bc-91a6-e45ad0b9a2ab" />
+
+
+---
 
 ## How to Use
 1. Ensure both the backend and frontend servers are running.
@@ -112,10 +121,11 @@ For example if we click on N13, we see that it highlights its direct dependencie
 
 5. An interactive, logically-structured graph and a list of key concepts will appear. Interact with the graph: Drag nodes, pan, zoom, and click nodes to highlight dependencies.
 
+6. After the graph is initially generated, you may choose to validate the proof logic.
+
 ---
 
 ## Future Improvements
 
 * **Concept Linking:** Link the key concepts displayed to the specific nodes/edges in the graph where they are applied.
-* **Logical Flaw Detection:** Enhance the AI prompt to identify and highlight potential errors or missing steps in a proof.
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
