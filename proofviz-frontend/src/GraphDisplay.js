@@ -5,15 +5,14 @@
  *a* @date October 3, 2025 (Last Modified: October 25, 2025)
  *
  * @description
- * This is the core React component for visualizing the proof graph. It uses
- * React Flow to render the nodes and edges provided by the `graphData` prop.
- *
- * It performs two main functions:
- * 1.  Calculates a custom, layer-based hierarchical layout for the graph nodes.
- * 2.  Handles all user interactions, such as node highlighting.
+ * This component visualizes the proof graph using React Flow.
+ * It is a "controlled" component: it receives all its interaction logic (like
+ * highlighting) as props from the parent App component. Its main
+ * responsibilities are to calculate the graph layout and apply styles
+ * based on the props it receives.
  */
 
-import React, { useState, useEffect, useCallback, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, Background, Controls } from 'reactflow';
 import MathNode from './MathNode';
 import 'reactflow/dist/style.css';
@@ -30,7 +29,8 @@ const verticalSpacing = 100;
 
 /**
  * Calculates the (x, y) position for each node to create a hierarchical,
- * top-down, layer-based layout.
+ * top-down, layer-based layout based on the proof's dependencies.
+ *
  * @param {Array} nodes - The initial array of nodes from React Flow.
  * @param {Array} edges - The initial array of edges from React Flow.
  * @returns {Object} An object { nodes, edges } with updated positions.
@@ -91,7 +91,7 @@ const getLayoutedElements = (nodes, edges) => {
       const newInDegree = (inDegree.get(childId) || 0) - 1;
       inDegree.set(childId, newInDegree);
 
-      // If all parents of the child have been processed, add it to the queue for the next layer.
+      // If all parents of the child have been processed, add it to the queue.
       if (newInDegree === 0) {
         layers.set(childId, layer + 1);
         queue.push(childId);
@@ -125,49 +125,43 @@ const nodeTypes = { mathNode: MathNode };
 
 /**
  * The main component for the React Flow graph.
- * Manages the state for nodes, edges, and user selections, and
- * orchestrates layout calculations and highlighting.
+ * This component is "controlled" by the App component. It receives the
+ * graph data and highlighting instructions as props.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.graphData - The full graph data (nodes, edges) from the AI.
+ * @param {Set<string>} props.highlightedNodes - A Set of node IDs to highlight.
+ * @param {Function} props.onNodeClick - Callback function from App.js to run on node click.
+ * @param {Function} props.onPaneClick - Callback function from App.js to run on pane click.
  */
-const GraphDisplay = ({ graphData }) => {
+const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick }) => {
   // State for React Flow's controlled nodes and edges
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  
-  // State to track which node is currently selected for highlighting
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
-
-  /**
-   * Memoized callback for when a node is clicked.
-   * Toggles the selectedNodeId state.
-   */
-  const onNodeClick = useCallback((event, node) => {
-    setSelectedNodeId(prevSelectedId => (prevSelectedId === node.id ? null : node.id));
-  }, []); // Empty dependency array means this function is created only once
 
   /**
    * Hook 1: (Layout Effect)
-   * Runs when new `graphData` arrives from the App component.
-   * This hook is responsible for:
-   * 1. Transforming the AI's JSON data into React Flow nodes.
-   * 2. Preserving any validation data (`isValid`, `critique`) passed from App.js.
-   * 3. Calculating the layout positions by calling `getLayoutedElements`.
-   * 4. Setting the final nodes and edges state for React Flow.
+   * Runs when new `graphData` arrives.
+   * This hook transforms the AI's JSON into React Flow nodes, calculates
+   * the layout, and sets the state for React Flow to render.
    *
-   * We use `useLayoutEffect` to ensure this runs synchronously before the
-   * browser paints, preventing a "flash" of un-layouted nodes.
+   * We use `useLayoutEffect` to run this *before* the browser paints,
+   * preventing a "flash" of un-layouted nodes.
    */
   useLayoutEffect(() => {
     if (!graphData || !graphData.nodes) return;
 
-    // "Smart" transform: Preserves data from validation runs
+    // "Smart" transform: Preserves data (like `isValid`) from validation runs
     let initialNodes = graphData.nodes.map((node, index) => ({
       ...node, 
       data: {
         ...(node.data || {}), 
+        // Use the existing label if it's already in 'data' (from validation),
+        // otherwise create the label from the raw node.
         label: node.data?.label || `(${node.id}) ${node.label}`,
       },
       type: 'mathNode',
-      position: node.position || { x: 0, y: 0 }, 
+      position: node.position || { x: 0, y: 0 }, // Preserve position if it exists
     }));
 
     let initialEdges = graphData.edges.map((edge, index) => ({
@@ -185,53 +179,38 @@ const GraphDisplay = ({ graphData }) => {
 
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
-    setSelectedNodeId(null); // Clear selection
-  }, [graphData, setNodes, setEdges]);
+  }, [graphData, setNodes, setEdges]); // Rerun only when graphData changes
 
   /**
    * Hook 2: (Effect)
-   * Runs when the `selectedNodeId` changes (i.e., user clicks a node).
+   * Runs when the `highlightedNodes` prop from App.js changes.
    * This hook handles the interactive highlighting. It loops through all
-   * nodes and edges and updates their `style` to dim non-connected elements.
+   * nodes and edges and updates their `style` to dim non-selected elements.
    */
   useEffect(() => {
+    // This prop now controls highlighting
+    const isHighlighting = highlightedNodes.size > 0;
+
     setNodes((currentNodes) =>
-      currentNodes.map((node) => {
-        const isHighlighting = selectedNodeId !== null;
-        if (!isHighlighting) {
-          node.style = { opacity: 1 }; // Reset style
-          return node;
-        }
-        
-        // Check if this node is the selected one or a direct neighbor
-        const isConnected = graphData.edges.some(
-          (edge) =>
-            (String(edge.source) === selectedNodeId && String(edge.target) === node.id) ||
-            (String(edge.target) === selectedNodeId && String(edge.source) === node.id)
-        );
-
-        node.style = (node.id === selectedNodeId || isConnected)
-          ? { opacity: 1 }   // Highlight
-          : { opacity: 0.2 }; // Dim
-        return node;
-      })
+      currentNodes.map((node) => ({
+        ...node,
+        // Apply dimming style if highlighting is active and node is NOT in the set
+        style: { opacity: isHighlighting && !highlightedNodes.has(node.id) ? 0.2 : 1 }
+      }))
     );
+    
     setEdges((currentEdges) =>
-      currentEdges.map((edge) => {
-        const isHighlighting = selectedNodeId !== null;
-        if (!isHighlighting) {
-          edge.style = { opacity: 1 }; // Reset style
-          return edge;
+      currentEdges.map((edge) => ({
+        ...edge,
+        // Highlight an edge if BOTH its source and target are also highlighted
+        style: { 
+          opacity: isHighlighting && !(highlightedNodes.has(edge.source) && highlightedNodes.has(edge.target)) 
+            ? 0.2 
+            : 1 
         }
-
-        // Check if this edge is connected to the selected node
-        const isConnected = String(edge.source) === selectedNodeId || String(edge.target) === selectedNodeId;
-
-        edge.style = isConnected ? { opacity: 1 } : { opacity: 0.2 }; // Highlight or Dim
-        return edge;
-      })
+      }))
     );
-  }, [selectedNodeId, graphData, setNodes, setEdges]); // Rerun when selection changes
+  }, [highlightedNodes, setNodes, setEdges]); // Rerun when highlight prop changes
 
   // --- Render the component ---
   return (
@@ -242,7 +221,9 @@ const GraphDisplay = ({ graphData }) => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
+        // Pass the click handlers up to the App component
+        onNodeClick={(event, node) => onNodeClick(node.id)}
+        onPaneClick={onPaneClick}
         nodeTypes={nodeTypes} // Tell React Flow to use our 'mathNode'
         fitView // Automatically zoom/pan to fit the graph
         minZoom={0.2} // Allow user to zoom out further

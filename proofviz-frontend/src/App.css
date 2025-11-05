@@ -25,7 +25,7 @@
 
 .proof-textarea {
   width: 80%;
-  max-width: 800px;
+  max-width: 1200px;
   height: 250px;
   margin-top: 20px;
   font-family: "Verdana", "Helvetica", "Arial", sans-serif;
@@ -200,4 +200,45 @@
 .validate-button.success {
   background-color: #28a745;
   color: white;
+}
+.instructions-box {
+  /* Match the width and style of your textarea */
+  width: 80%;
+  max-width: 1000px;
+  
+  /* Use a slightly different background to distinguish it */
+  background-color: #20232a; 
+  border: 1px solid #61dafb; /* Dashed border to look like 'help' */
+  border-radius: 8px;
+  
+  /* Text styling */
+  text-align: left;
+  padding: 15px 20px;
+  margin-top: -20px;
+  font-size: 0.80em; /* Make it slightly smaller than main text */
+  color: #c9c9c9;
+}
+
+.instructions-box h4 {
+  margin-top: 0;
+  color: #61dafb;
+  border-bottom: 1px solid #61dafb;
+  padding-bottom: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.instructions-box ul {
+  padding-left: 20px; /* Standard bullet point indent */
+  margin-top: -30px;
+  margin-bottom: 5px;
+}
+
+.instructions-box li {
+  margin-bottom: 7px;
+  line-height: 1.5;
+}
+
+.instructions-box li strong {
+  color: #ffffff; /* Make the feature name stand out */
 }

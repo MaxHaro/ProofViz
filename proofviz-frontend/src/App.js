@@ -11,7 +11,7 @@
  */
 
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import GraphDisplay from './GraphDisplay';
 import ConceptsWindow from './ConceptsWindow';
@@ -45,15 +45,23 @@ function App() {
   const [error, setError] = useState(null);
 
   /**
+   * @state {Set<string>} highlightedNodes - Stores the IDs of nodes to be highlighted.
+   * This state is "lifted" to App.js so it can be shared between GraphDisplay
+   * (for clicking nodes) and ConceptsWindow (for clicking concepts).
+   */
+  const [highlightedNodes, setHighlightedNodes] = useState(new Set());
+
+  /**
    * Handles the primary "Visualize Proof" action.
    * Sends the LaTeX proof to the backend, receives the structured graph,
    * and updates the state to render the visualization.
    */
   const handleSubmit = async () => {
     setIsLoading(true);
-    setValidationStatus('idle'); // Reset validation button on new proof
+    setValidationStatus('idle'); // Reset validation button
     setError(null);
     setGraphData(null); 
+    setHighlightedNodes(new Set()); // Clear highlights on new proof
     
     try {
       const response = await axios.post('http://localhost:5000/process-proof', {
@@ -135,13 +143,78 @@ function App() {
     }
   };
 
+  /**
+   * @callback handleNodeClick
+   * @description Called by GraphDisplay when a node is clicked.
+   * Calculates and sets the highlighted nodes (the node and its direct neighbors).
+   * @param {string} nodeId - The ID of the clicked node.
+   */
+  const handleNodeClick = useCallback((nodeId) => {
+    if (!graphData) return;
+
+    setHighlightedNodes(prevSelected => {
+      // If the clicked node is already the only one highlighted, clear highlights
+      if (prevSelected.size === 1 && prevSelected.has(nodeId)) {
+        return new Set();
+      }
+
+      // Find all neighbors
+      const neighbors = new Set([nodeId]); // Start with the node itself
+      graphData.edges.forEach(edge => {
+        if (edge.source === nodeId) neighbors.add(edge.target);
+        if (edge.target === nodeId) neighbors.add(edge.source);
+      });
+      return neighbors;
+    });
+  }, [graphData]); // Re-create this function if graphData changes
+
+  /**
+   * @callback handleConceptClick
+   * @description Called by ConceptsWindow when a concept is clicked.
+   * Sets the highlighted nodes to the list provided by the concept.
+   * @param {Array<string>} nodeIds - An array of node IDs to highlight.
+   */
+  const handleConceptClick = useCallback((nodeIds) => {
+    if (!nodeIds || nodeIds.length === 0) {
+      setHighlightedNodes(new Set()); // If concept links to nothing, clear
+      return;
+    }
+    // Highlight all nodes specified by the 'used_in_nodes' array
+    setHighlightedNodes(new Set(nodeIds));
+  }, []);
+
+  /**
+   * @callback handlePaneClick
+   * @description Called by GraphDisplay when the graph background is clicked.
+   * Clears all highlighting.
+   */
+  const handlePaneClick = useCallback(() => {
+    setHighlightedNodes(new Set());
+  }, []);
+
   // --- Render the main component ---
   return (
     <div className="App">
       <header className="App-header">
         <h1>ProofViz 🔬</h1>
-        <p>Paste your LaTeX mathematical proof below to visualize its logical structure.</p>
-        
+        <div className="instructions-box">
+          <h4>How to Use ProofViz:</h4>
+          <ul>
+            <li>
+              <strong>Visualize:</strong> Paste your LaTeX proof and click "Visualize Proof" to see the graph and key concepts.
+            </li>
+            <li>
+              <strong>Validate:</strong> Click "Validate Logic" to have the AI check the proof. Flawed steps will be marked in red (⚠️). Hover over the flawed node to read the logical discrepancy. 
+            </li>
+            <li>
+              <strong>Explore Graph:</strong> Drag nodes wherever you like and click any node in the graph to highlight its direct dependencies. Click the background to clear.
+            </li>
+            <li>
+              <strong>Explore Concepts:</strong> Click any item in the "Key Concepts" window to highlight all the steps in the graph where that concept is used.
+            </li>
+          </ul>
+        </div>
+
         {/* Controlled component for user input */}
         <textarea
           className="proof-textarea"
@@ -180,11 +253,23 @@ function App() {
         {/* Conditionally render the graph and concepts window ONLY if graphData exists */}
         {graphData && (
           <div className="viz-container">
+            {/* Pass down the graph data and all state/handlers
+              needed for interaction (highlighting, clicks).
+            */}
             <GraphDisplay 
-              graphData={graphData} 
+              graphData={graphData}
+              highlightedNodes={highlightedNodes}
+              onNodeClick={handleNodeClick}
+              onPaneClick={handlePaneClick}
             />
-            {/* Conditionally render the concepts window ONLY if concepts were returned */}
-            {graphData.key_concepts && <ConceptsWindow concepts={graphData.key_concepts} />}
+            
+            {/* Conditionally render the concepts window */}
+            {graphData.key_concepts && (
+              <ConceptsWindow 
+                concepts={graphData.key_concepts}
+                onConceptClick={handleConceptClick}
+              />
+            )}
           </div>
         )}
 

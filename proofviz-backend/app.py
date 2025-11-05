@@ -41,14 +41,16 @@ Represent your output as a single JSON object. This object MUST have three main 
 2.  **Edges**: Each edge must have a `source` ("id") and a `target` ("id").
 
 3.  **key_concepts**: You MUST add this third key at the top level.
-    * It must be an array of objects. Each object MUST have keys "name" and "description".
+    * It must be an array of objects. Each object MUST have keys "name", "description" and "used_in_nodes".
     * Include only definitions, theorems, or axioms NECESSARY to justify a specific deduction step (an edge) in the proof.
+    * **name**: The name of the theorem or definition (e.g., "Archimedean Property").
+    * **description**: A brief explanation of the concept.
+    * **used_in_nodes**: This MUST be an array of node IDs (e.g., ["N5", "N7"]) that are justified or defined by this concept. If the concept is general (like "Proof by Contradiction"), this array can be empty [].
     * **CRITICAL Instruction**: Within the "name" and "description" strings, ALL mathematical notation (variables, symbols, expressions, commands like `\lim`, `\sqrt`, `\in`, etc.) MUST be enclosed in $...$ delimiters for inline math.
     * **DO NOT** output raw LaTeX commands without the $...$ delimiters.
     * **Correct Delimiter Examples**:
-        * `{{"name": "Definition of Even Number", "description": "An integer $n$ is even if $n = 2k$ for some integer $k$."}}`
-        * `{{"name": "Archimedean Property", "description": "For any real number $x$, there exists an integer $n$ such that $n > x$."}}`
-        * `{{"name": "GCD Definition", "description": "Integers $a$ and $b$ are coprime if $\gcd(a, b) = 1$."}}`
+        * `{{"name": "Definition of Even Number", "description": "An integer $n$ is even if $n = 2k$ for some integer $k$.", "used_in_nodes": ["N6", "N12"]}}`
+        * `{{"name": "Archimedean Property", "description": "For any real number $x$, there exists an integer $n$ such that $n > x$.", "used_in_nodes": ["N3"]}}`
     * If no concepts are found, return an empty array `[]`.
 
 Here is the proof you need to analyze:
