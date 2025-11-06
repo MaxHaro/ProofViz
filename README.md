@@ -2,7 +2,8 @@
 
 ProofViz is a full-stack web application that transforms dense LaTeX mathematical proofs into clear, interactive logical graphs. This educational tool uses an AI backend to parse the proof's structure and a React frontend to visualize the dependencies, helping students and mathematicians demystify the flow of complex arguments.
 
-<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/2a01836c-2cf8-43a9-a265-203f34ca5bce" />
+<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/6e835d54-0998-429c-9b1f-f1141e33eff2" />
+
 
 
 
@@ -13,8 +14,9 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 * **AI-Powered Analysis**: Uses Google Gemini to deconstruct the logical steps of a mathematical proof.
 * **Logical Flaw Detection**: A separate "Validate Logic" button calls a specialized AI verifier to analyze the proof for logical gaps or errors. Invalid steps are visually flagged (⚠️), and valid proofs are given a success confirmation (✔).
 * **Key Concepts Extraction**: Automatically identifies and lists key definitions, theorems, or axioms used to justify steps in the proof.
-* **Interactive Graph Visualization**: Renders proofs as dynamic graphs where you can drag nodes, pan, and zoom.
-* **LaTeX Rendering**: Uses react-latex-next to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$, etc...) beautifully inside the graph nodes.
+* **Interactive Concept Linking**: **(NEW)** Click a concept in the sidebar (e.g., "Archimedean Property") to instantly highlight all nodes in the graph where that concept is used.
+* **Interactive Graph Highlighting**: Click any node in the graph to highlight its direct dependencies (parents and children). Click the background to clear.
+* **LaTeX Rendering**: Uses `react-latex-next` to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$) beautifully inside the graph nodes.
 * **Hierarchical Layout**: Automatically arranges the graph in a top-down, layer-based tree, so logical dependencies flow clearly from assumptions to conclusions.
 * **Full-Stack Architecture**: Built with a modern React frontend and a robust Python/Flask backend.
 
@@ -112,20 +114,14 @@ The app also features a validation engine. After visualizing, you can click "Val
 
 ## How to Use
 1. Ensure both the backend and frontend servers are running.
-
 2. Open your web browser and navigate to http://localhost:3000.
-
 3. Paste a mathematical proof written in LaTeX into the text area.
-
-4. Click the "Visualize Proof" button.
-
-5. An interactive, logically-structured graph and a list of key concepts will appear. Interact with the graph: Drag nodes, pan, zoom, and click nodes to highlight dependencies.
-
-6. After the graph is initially generated, you may choose to validate the proof logic.
+4. Click the "Visualize Proof" button to generate the graph and key concepts.
+5. Click the "Validate Logic" button to have the AI analyze the proof for errors.
+6. Interact with the graph: Drag nodes, pan, zoom, click any node to highlight its neighbors, or click the background to clear.
+7. Explore Concepts: (NEW) Click any item in the "Key Concepts" window to highlight all steps in the graph where that concept is used.
 
 ---
 
 ## Future Improvements
-
-* **Concept Linking:** Link the key concepts displayed to the specific nodes/edges in the graph where they are applied.
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
