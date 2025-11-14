@@ -126,4 +126,4 @@ The app also features a validation engine. After visualizing, you can click "Val
 ## Future Improvements
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
 * **Ability to Explain Edges:** If you're still struggling to see how one node implies another, you may click on a link between two nodes and press a "Explain Relationship of Dependence" button that explainsexactly that.
-* **Graph Editor:** This is your graph; you can make it look as pretty as you need or even add more steps that you think are missing (or remove any nodes/edges) to really grasp the logical flow. All in all, expect to be able to add new nodes, create new edges between nodes, remove any nodes or edges, and 
+* **Graph Editor:** This is your graph; you can make it look as pretty as you need or even add more steps that you think are missing (or remove any nodes/edges) to really grasp the logical flow. All in all, expect to be able to add/remove/edit any node or edge.
