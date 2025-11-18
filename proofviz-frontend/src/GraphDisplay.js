@@ -150,36 +150,50 @@ const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick })
    */
   useLayoutEffect(() => {
     if (!graphData || !graphData.nodes) return;
+    // Check if we already have nodes rendered. If so we keep the current node positions.
+    const isUpdate = nodes.length > 0;
+    const currentPositions = new Map(nodes.map(n => [n.id, n.position]));
 
-    // "Smart" transform: Preserves data (like `isValid`) from validation runs
-    let initialNodes = graphData.nodes.map((node, index) => ({
-      ...node, 
-      data: {
-        ...(node.data || {}), 
-        // Use the existing label if it's already in 'data' (from validation),
-        // otherwise create the label from the raw node.
-        label: node.data?.label || `(${node.id}) ${node.label}`,
-      },
-      type: 'mathNode',
-      position: node.position || { x: 0, y: 0 }, // Preserve position if it exists
-    }));
+    let newNodes = graphData.nodes.map((node) => {
+      // If it's an update, try to find the existing position
+      const existingPos = currentPositions.get(String(node.id));
 
-    let initialEdges = graphData.edges.map((edge, index) => ({
+      return {
+        id: String(node.id),
+        data: {
+          ...(node.data || {}),
+          // Preserve label if it exists in data, otherwise format it
+          label: node.data?.label || `(${node.id}) ${node.label}`,
+        },
+        type: 'mathNode',
+        // Use existing position if available, otherwise default to 0,0
+        position: isUpdate && existingPos ? existingPos : { x: 0, y: 0 },
+      };
+    });
+
+    let newEdges = graphData.edges.map((edge, index) => ({
       id: `e${edge.source}-${edge.target}-${index}`,
       source: String(edge.source),
       target: String(edge.target),
       animated: true,
     }));
 
-    // Calculate the layout
-    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-      initialNodes,
-      initialEdges
-    );
-
-    setNodes(layoutedNodes);
-    setEdges(layoutedEdges);
-  }, [graphData, setNodes, setEdges]); // Rerun only when graphData changes
+    // Only run the heavy layout algorithm if this is a brand new graph.
+    if (!isUpdate) {
+      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        newNodes,
+        newEdges
+      );
+      setNodes(layoutedNodes);
+      setEdges(layoutedEdges);
+    } else {
+      // If it's just a data update (validation), set nodes directly to keep positions.
+      setNodes(newNodes);
+      setEdges(newEdges);
+    }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [graphData, setNodes, setEdges]);
 
   /**
    * Hook 2: (Effect)
