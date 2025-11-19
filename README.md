@@ -113,4 +113,4 @@ The app also features a validation engine. After visualizing, you can click "Val
 
 ## Future Improvements
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
-* **Ability to Explain Edges:** If you're still struggling to see how one node implies another, you may click on a link between two nodes and press a "Explain Relationship of Dependence" button that explainsexactly that.
+* **Ability to Explain Edges:** If you're still struggling to see how one node implies another, you may click on an edge between two nodes and press a "Explain Relationship of Dependence" button that explains exactly that.
