@@ -92,6 +92,26 @@ The format for the returned JSON object must be:
 Provide ONLY the validation JSON object. Do not include any text or explanations.
 """
 
+EDGE_EXPLANATION_PROMPT_TEMPLATE = r"""
+You are a mathematical logic tutor.
+The user is looking at a step in a proof and wants to understand the logical connection between two specific nodes.
+
+**Context (The Full Proof):**
+{latex_proof}
+
+**The Step in Question:**
+* **From (Premise):** {source_node_label}
+* **To (Conclusion):** {target_node_label}
+
+**Your Task:**
+Explain CLEARLY and CONCISELY why the "From" node leads to the "To" node.
+* Identify the specific rule of inference, algebraic manipulation, definition, or theorem used.
+* Keep the explanation under 3 sentences if possible.
+* Use LaTeX formatting (enclosed in $...$) for math symbols.
+
+Provide ONLY the explanation text.
+"""
+
 # =============================================================================
 # FLASK APPLICATION SETUP
 # =============================================================================
@@ -168,7 +188,7 @@ def validate_proof_endpoint():
     """
     data = request.get_json()
 
-    # --- 1. Input Validation ---
+    # --- Input Validation ---
     if not data or 'proof' not in data or 'graphData' not in data:
         return jsonify({"error": "Invalid request: 'proof' or 'graphData' key is missing."}), 400
 
@@ -176,11 +196,11 @@ def validate_proof_endpoint():
     # Convert the received graphData dict back into a JSON string for the prompt
     graph_json = json.dumps(data['graphData'], indent=2)
 
-    # --- 2. Prompt Generation ---
+    # --- Prompt Generation ---
     # Format the validation prompt with the proof and the graph
     prompt = VALIDATION_PROMPT_TEMPLATE.format(latex_proof=latex_proof, graph_json=graph_json)
 
-    # --- 3. AI Call & Response Handling ---
+    # --- AI Call & Response Handling ---
     try:
         model = genai.GenerativeModel('models/gemini-2.5-pro')
         response = model.generate_content(prompt)
@@ -203,6 +223,42 @@ def validate_proof_endpoint():
         # Handle all other errors
         print(f"An unexpected error occurred during validation: {e}")
         return jsonify({"error": "An internal server error occurred during validation."}), 500
+    
+@app.route('/explain-edge', methods=['POST'])
+def explain_edge_endpoint():
+    """
+    API endpoint to generate an explanation for a specific logical step (edge).
+    Receives: "proof", "sourceLabel", "targetLabel".
+    Returns: {"explanation": "..."}
+    """
+    data = request.get_json()
+
+    if not data or 'proof' not in data or 'sourceLabel' not in data or 'targetLabel' not in data:
+        return jsonify({"error": "Invalid request: Missing proof or node labels."}), 400
+
+    latex_proof = data['proof']
+    source_label = data['sourceLabel']
+    target_label = data['targetLabel']
+
+    # Format the prompt
+    prompt = EDGE_EXPLANATION_PROMPT_TEMPLATE.format(
+        latex_proof=latex_proof,
+        source_node_label=source_label,
+        target_node_label=target_label
+    )
+
+    try:
+        model = genai.GenerativeModel('models/gemini-2.5-pro')
+        response = model.generate_content(prompt)
+        
+        # We just want the raw text explanation
+        explanation = response.text.strip()
+        
+        return jsonify({"explanation": explanation})
+
+    except Exception as e:
+        print(f"An unexpected error occurred during edge explanation: {e}")
+        return jsonify({"error": "An internal server error occurred."}), 500
 
 # =============================================================================
 # MAIN EXECUTION

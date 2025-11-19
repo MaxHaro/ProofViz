@@ -110,12 +110,12 @@
 
 .concepts-window li span {
   color: #c9c9c9;
-  font-size: 0.96em;
+  font-size: 0.94em;
   line-height: 0.5;
 }
 
 .concepts-window .katex {
-  font-size: 1.3em !important; 
+  font-size: 1.35em !important; 
 }
 
 .concepts-window .katex .mord, 
@@ -133,12 +133,12 @@
 .concepts-window li span .katex .mbin,
 .concepts-window li span .katex .mn,
 .concepts-window li span .katex .mpunct {
-   font-size: 0.9em !important; 
+   font-size: 0.95em !important; 
 }
 
 .concepts-window .katex .sizing.reset-size6 .mord,
 .concepts-window .katex .sizing.reset-size6 .mathnormal {
-    font-size: 1.0em !important; 
+    font-size: 1.09em !important; 
 }
 
 .math-node-label {
@@ -216,7 +216,7 @@
   text-align: left;
   padding: 15px 20px;
   margin-top: -20px;
-  font-size: 0.80em; /* Make it slightly smaller than main text */
+  font-size: 0.7em; /* Make it slightly smaller than main text */
   color: #c9c9c9;
 }
 
@@ -266,4 +266,58 @@
   background-color: #4a4e69;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* --- EXPLANATION MODAL --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Sit on top of everything */
+}
+
+.modal-content {
+  background-color: #282c34;
+  border: 2px solid #61dafb;
+  border-radius: 10px;
+  padding: 25px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #61dafb;
+  border-bottom: 1px solid #555;
+  padding-bottom: 10px;
+}
+
+.explanation-body {
+  font-size: 1.0em;
+  line-height: 1.6;
+  color: #e0e0e0;
+  margin: 20px 0;
+}
+
+.modal-close-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+}
+
+.modal-close-btn:hover {
+  background-color: #fff;
 }

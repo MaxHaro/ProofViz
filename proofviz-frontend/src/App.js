@@ -15,6 +15,7 @@ import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import GraphDisplay from './GraphDisplay';
 import ConceptsWindow from './ConceptsWindow';
+import ExplanationModal from './ExplanationModal';
 
 function App() {
   /**
@@ -50,6 +51,9 @@ function App() {
    * (for clicking nodes) and ConceptsWindow (for clicking concepts).
    */
   const [highlightedNodes, setHighlightedNodes] = useState(new Set());
+
+  const [explanation, setExplanation] = useState(null); // Stores the text
+  const [isExplaining, setIsExplaining] = useState(false); // Loading state for explanation
 
   /**
    * Handles the primary "Visualize Proof" action.
@@ -225,6 +229,45 @@ function App() {
     }));
   };
 
+  /**
+   * Handles clicking an edge in the graph.
+   * Fetches an AI explanation for the logical connection between the source and target nodes.
+   */
+  const handleEdgeClick = useCallback(async (edgeId, sourceId, targetId) => {
+    if (!graphData) return;
+
+    // 1. Find the text labels for the Source and Target nodes
+    const sourceNode = graphData.nodes.find(n => n.id === sourceId);
+    const targetNode = graphData.nodes.find(n => n.id === targetId);
+
+    if (!sourceNode || !targetNode) return;
+
+    // 2. Open the modal immediately in "loading" state
+    setIsExplaining(true);
+    setExplanation(null); 
+
+    try {
+      // 3. Call the backend
+      const response = await axios.post('http://localhost:5000/explain-edge', {
+        proof: proofText,
+        sourceLabel: sourceNode.label, // Send the actual text, not just ID
+        targetLabel: targetNode.label
+      });
+
+      setExplanation(response.data.explanation);
+    } catch (err) {
+      console.error("Error fetching explanation:", err);
+      setExplanation("Failed to generate explanation. Please try again.");
+    } finally {
+      setIsExplaining(false);
+    }
+  }, [graphData, proofText]);
+
+  const closeExplanation = () => {
+    setExplanation(null);
+    setIsExplaining(false);
+  };
+
   // --- Render the main component --- 
   return (
     <div className="App">
@@ -240,7 +283,7 @@ function App() {
               <strong>Validate Proof:</strong> Click "Validate Logic" to have the AI check the proof. Flawed steps will be marked in red (⚠️). Hover over the flawed node to read the logical discrepancy. 
             </li>
             <li>
-              <strong>Explore Graph:</strong> Drag nodes wherever you like and click any node in the graph to highlight its direct dependencies. Click the background to clear. 
+              <strong>Explore Graph:</strong> Drag nodes wherever you like and click any node in the graph to highlight its direct dependencies. Click the background to clear. Double-click edges to generate an explanation for them.
             </li>
             <li>
               <strong>Explore Key Concepts:</strong> Click any item in the "Key Concepts" window to highlight all the steps in the graph where that concept is used.
@@ -305,6 +348,7 @@ function App() {
               highlightedNodes={highlightedNodes}
               onNodeClick={handleNodeClick}
               onPaneClick={handlePaneClick}
+              onEdgeDoubleClick={handleEdgeClick}
             />
             
             {/* Conditionally render the concepts window */}
@@ -315,6 +359,14 @@ function App() {
               />
             )}
           </div>
+        )}
+
+        {(explanation || isExplaining) && (
+          <ExplanationModal 
+            content={explanation} 
+            isLoading={isExplaining} 
+            onClose={closeExplanation} 
+          />
         )}
 
       </header>
