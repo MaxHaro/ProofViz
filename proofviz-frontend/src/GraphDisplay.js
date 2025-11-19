@@ -134,7 +134,7 @@ const nodeTypes = { mathNode: MathNode };
  * @param {Function} props.onNodeClick - Callback function from App.js to run on node click.
  * @param {Function} props.onPaneClick - Callback function from App.js to run on pane click.
  */
-const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick }) => {
+const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick, onEdgeDoubleClick }) => {
   // State for React Flow's controlled nodes and edges
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -246,6 +246,12 @@ const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick })
         onEdgesChange={onEdgesChange}
         // Pass the click handlers up to the App component
         onNodeClick={(event, node) => onNodeClick(node.id)}
+        onEdgeDoubleClick={(event, edge) => {
+           // React Flow gives us the edge object, which contains source and target IDs
+           if (onEdgeDoubleClick) {
+             onEdgeDoubleClick(edge.id, edge.source, edge.target);
+           }
+        }}
         onPaneClick={onPaneClick}
         onConnect={onConnect}
         nodeTypes={nodeTypes} // Tell React Flow to use our 'mathNode'
