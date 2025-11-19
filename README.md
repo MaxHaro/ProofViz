@@ -2,8 +2,7 @@
 
 ProofViz is a full-stack web application that transforms dense LaTeX mathematical proofs into clear, interactive logical graphs. This educational tool uses an AI backend to parse the proof's structure and a React frontend to visualize the dependencies, helping students and mathematicians demystify the flow of complex arguments.
 
-<img width="1920" height="954" alt="image" src="https://github.com/user-attachments/assets/6e835d54-0998-429c-9b1f-f1141e33eff2" />
-
+<img width="1902" height="991" alt="image" src="https://github.com/user-attachments/assets/53f85372-7540-4b15-8bb2-dcee36f282ed" />
 
 
 
@@ -14,8 +13,9 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 * **AI-Powered Analysis**: Uses Google Gemini to deconstruct the logical steps of a mathematical proof.
 * **Logical Flaw Detection**: A separate "Validate Logic" button calls a specialized AI verifier to analyze the proof for logical gaps or errors. Invalid steps are visually flagged (⚠️), and valid proofs are given a success confirmation (✔).
 * **Key Concepts Extraction**: Automatically identifies and lists key definitions, theorems, or axioms used to justify steps in the proof.
-* **Interactive Concept Linking**: **(NEW)** Click a concept in the sidebar (e.g., "Archimedean Property") to instantly highlight all nodes in the graph where that concept is used.
+* **Interactive Concept Linking**: Click a concept in the sidebar (e.g., "Archimedean Property") to instantly highlight all nodes in the graph where that concept is used.
 * **Interactive Graph Highlighting**: Click any node in the graph to highlight its direct dependencies (parents and children). Click the background to clear.
+* **Graph Editing**: Add/remove nodes/edges to help you understand the proof your own way.
 * **LaTeX Rendering**: Uses `react-latex-next` to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$) beautifully inside the graph nodes.
 * **Hierarchical Layout**: Automatically arranges the graph in a top-down, layer-based tree, so logical dependencies flow clearly from assumptions to conclusions.
 * **Full-Stack Architecture**: Built with a modern React frontend and a robust Python/Flask backend.
@@ -126,4 +126,3 @@ The app also features a validation engine. After visualizing, you can click "Val
 ## Future Improvements
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
 * **Ability to Explain Edges:** If you're still struggling to see how one node implies another, you may click on a link between two nodes and press a "Explain Relationship of Dependence" button that explainsexactly that.
-* **Graph Editor:** This is your graph; you can make it look as pretty as you need or even add more steps that you think are missing (or remove any nodes/edges) to really grasp the logical flow. All in all, expect to be able to add/remove/edit any node or edge.
