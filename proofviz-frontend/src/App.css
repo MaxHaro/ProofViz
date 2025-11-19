@@ -21,6 +21,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 20px;
 }
 
 .proof-textarea {
@@ -241,4 +242,28 @@
 
 .instructions-box li strong {
   color: #ffffff; /* Make the feature name stand out */
+}
+
+/* New Action Button Style */
+.action-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #2b6cb0; /* Distinct Blue color */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #2c5282;
+}
+
+.action-button:disabled {
+  background-color: #4a4e69;
+  cursor: not-allowed;
+  opacity: 0.7;
 }

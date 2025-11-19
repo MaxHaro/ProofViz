@@ -192,7 +192,40 @@ function App() {
     setHighlightedNodes(new Set());
   }, []);
 
-  // --- Render the main component ---
+
+  /**
+   * Manually adds a new node to the graph.
+   * Prompts the user for the label text (supporting LaTeX) and updates graphData.
+   */
+  const handleAddNode = () => {
+    // Check if a graph exists
+    if (!graphData) return;
+
+    // Prompt user for text
+    const label = prompt("Enter text for new step (wrap math in $...$):");
+    if (!label) return; // Exit if user cancelled
+
+    // Create a unique ID
+    const newId = prompt("Enter node ID for your new step (e.g. N1, N7, Explanation, etc.):");
+    if (!newId) return;
+
+    // Create the new node object
+    const newNode = {
+      id: newId,
+      label: label, // The MathNode component will automatically render LaTeX here
+      type: 'deduction',
+      // isValid will default to true in MathNode
+      // critique will default to "" in MathNode
+    };
+
+    // Update the state
+    setGraphData(prev => ({
+      ...prev,
+      nodes: [...prev.nodes, newNode] // Append the new node
+    }));
+  };
+
+  // --- Render the main component --- 
   return (
     <div className="App">
       <header className="App-header">
@@ -204,13 +237,16 @@ function App() {
               <strong>Visualize:</strong> Paste your LaTeX proof and click "Visualize Proof" to see the graph and key concepts.
             </li>
             <li>
-              <strong>Validate:</strong> Click "Validate Logic" to have the AI check the proof. Flawed steps will be marked in red (⚠️). Hover over the flawed node to read the logical discrepancy. 
+              <strong>Validate Proof:</strong> Click "Validate Logic" to have the AI check the proof. Flawed steps will be marked in red (⚠️). Hover over the flawed node to read the logical discrepancy. 
             </li>
             <li>
-              <strong>Explore Graph:</strong> Drag nodes wherever you like and click any node in the graph to highlight its direct dependencies. Click the background to clear.
+              <strong>Explore Graph:</strong> Drag nodes wherever you like and click any node in the graph to highlight its direct dependencies. Click the background to clear. 
             </li>
             <li>
-              <strong>Explore Concepts:</strong> Click any item in the "Key Concepts" window to highlight all the steps in the graph where that concept is used.
+              <strong>Explore Key Concepts:</strong> Click any item in the "Key Concepts" window to highlight all the steps in the graph where that concept is used.
+            </li>
+            <li>
+              <strong>Edit Graph:</strong> Add new nodes/steps by pressing the "+ Add Step" button. You may also connect any two nodes by drawing an edge between them. Delete nodes/edges by selecting them and pressing the 'Backspace' key on your keyboard.
             </li>
           </ul>
         </div>
@@ -231,6 +267,14 @@ function App() {
             disabled={isLoading} 
           >
             {isLoading ? 'Visualizing...' : 'Visualize Proof'}
+          </button>
+
+          <button
+            className="action-button"
+            onClick={handleAddNode}
+            disabled={!graphData || isLoading}
+          >
+            + Add Step
           </button>
 
           <button
