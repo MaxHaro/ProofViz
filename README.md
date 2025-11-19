@@ -16,6 +16,7 @@ ProofViz is a full-stack web application that transforms dense LaTeX mathematica
 * **Interactive Concept Linking**: Click a concept in the sidebar (e.g., "Archimedean Property") to instantly highlight all nodes in the graph where that concept is used.
 * **Interactive Graph Highlighting**: Click any node in the graph to highlight its direct dependencies (parents and children). Click the background to clear.
 * **Graph Editing**: Add/remove nodes/edges to help you understand the proof your own way.
+* **AI-Powered Step Explanations**: Double-click any connecting line (edge) to open a modal where the AI explains exactly *how* one step leads to the next.
 * **LaTeX Rendering**: Uses `react-latex-next` to render all mathematical notations ($\sqrt{2}$, $\lim_{n \to \infty}$) beautifully inside the graph nodes.
 * **Hierarchical Layout**: Automatically arranges the graph in a top-down, layer-based tree, so logical dependencies flow clearly from assumptions to conclusions.
 * **Full-Stack Architecture**: Built with a modern React frontend and a robust Python/Flask backend.
@@ -111,6 +112,17 @@ The app also features a validation engine. After visualizing, you can click "Val
 
 ---
 
+## How to Use
+1. Ensure both the backend and frontend servers are runnning in different terminals.
+2. Open your web browser and navigate to http://localhost:3000.
+3. Paste a mathematical proof written in LaTeX into the text area.
+4. Click the "Visualize Proof" button.
+5. An interactive, logically-structured graph and a list of key concepts will appear.
+6. Validate: Click "Validate Logic" to check if all steps are sound!
+7. Edit the Graph: Use the "+ Add Step" button to add manual annotations. Drag lines between node handles to create new connections. Select a node/edge and press 'Backspace' to delete it.
+8. Get Explanations: Double-click any edge line to read a detailed explanation of that specific logical inference.
+
+---
+
 ## Future Improvements
 * **Save & Share:** Add functionality for users to save and share their generated proof graphs.
-* **Ability to Explain Edges:** If you're still struggling to see how one node implies another, you may click on an edge between two nodes and press a "Explain Relationship of Dependence" button that explains exactly that.
