@@ -43,7 +43,7 @@ const ConceptsWindow = ({ concepts, onConceptClick }) => {
 
   return (
     <div className="concepts-window">
-      <h3>Key Concepts Used:</h3>
+      <h3>Key Concepts:</h3>
       
       {/* Conditionally render the list:
         - If the concepts array is not empty, map over it and display each concept.

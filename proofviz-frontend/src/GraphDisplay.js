@@ -12,8 +12,8 @@
  * based on the props it receives.
  */
 
-import React, { useEffect, useLayoutEffect } from 'react';
-import ReactFlow, { useNodesState, useEdgesState, Background, Controls } from 'reactflow';
+import React, { useEffect, useLayoutEffect, useCallback } from 'react';
+import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Controls } from 'reactflow';
 import MathNode from './MathNode';
 import 'reactflow/dist/style.css';
 
@@ -140,6 +140,15 @@ const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick })
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   /**
+   * Handler for connecting nodes manually.
+   * React Flow calls this when you drag a line from one handle to another.
+   */
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
+    [setEdges]
+  );
+
+  /**
    * Hook 1: (Layout Effect)
    * Runs when new `graphData` arrives.
    * This hook transforms the AI's JSON into React Flow nodes, calculates
@@ -238,6 +247,7 @@ const GraphDisplay = ({ graphData, highlightedNodes, onNodeClick, onPaneClick })
         // Pass the click handlers up to the App component
         onNodeClick={(event, node) => onNodeClick(node.id)}
         onPaneClick={onPaneClick}
+        onConnect={onConnect}
         nodeTypes={nodeTypes} // Tell React Flow to use our 'mathNode'
         fitView // Automatically zoom/pan to fit the graph
         minZoom={0.2} // Allow user to zoom out further
