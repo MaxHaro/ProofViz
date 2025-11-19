@@ -109,18 +109,6 @@ The app also features a validation engine. After visualizing, you can click "Val
 
 <img width="973" height="643" alt="image" src="https://github.com/user-attachments/assets/1df359ca-10c0-47bc-91a6-e45ad0b9a2ab" />
 
-
----
-
-## How to Use
-1. Ensure both the backend and frontend servers are running.
-2. Open your web browser and navigate to http://localhost:3000.
-3. Paste a mathematical proof written in LaTeX into the text area.
-4. Click the "Visualize Proof" button to generate the graph and key concepts.
-5. Click the "Validate Logic" button to have the AI analyze the proof for errors.
-6. Interact with the graph: Drag nodes, pan, zoom, click any node to highlight its neighbors, or click the background to clear.
-7. Explore Concepts: (NEW) Click any item in the "Key Concepts" window to highlight all steps in the graph where that concept is used.
-
 ---
 
 ## Future Improvements
