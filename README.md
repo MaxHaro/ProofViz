@@ -105,6 +105,12 @@ To clarify complex arguments, you can click on any node. This interactive featur
 
 For example if we click on N13, we see that it highlights its direct dependencies: N6, N12 and N14.
 
+Example of a real analysis proof I analyzed for my MATH142A (Intro to Real Analysis) class:
+
+![Screenshot_1-12-2025_215344_localhost](https://github.com/user-attachments/assets/a5a2cb2a-fa8e-451d-9960-1ecd160578e8)
+
+I personally use ProofViz to study!
+
 ---
 ## Proof Logic Validation
 The app also features a validation engine. After visualizing, you can click "Validate Logic" to have the AI analyze each step. Any invalid deductions are instantly flagged with a red border and a warning icon, with a tooltip explaining the flaw. For example, the app correctly identified N5 as a problematic node in the flawed proof that 1 = 2:
