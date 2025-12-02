@@ -66,8 +66,9 @@ cd proofviz-backend
 pip install Flask Flask-Cors google-generativeai python-dotenv
 
 # 3. Create a .env file in this directory
-#    Add your API key to this file:
-#    GEMINI_API_KEY=YOUR_API_KEY_HERE
+#      Add your API key to this file:
+#      GEMINI_API_KEY=YOUR_API_KEY_HERE
+# e.g. echo GEMINI_API_KEY=YOUR_API_KEY_HERE > .env
 
 # 4. Run the Flask server
 python app.py
@@ -116,7 +117,7 @@ The app also features a validation engine. After visualizing, you can click "Val
 1. Ensure both the backend and frontend servers are runnning in different terminals.
 2. Open your web browser and navigate to http://localhost:3000.
 3. Paste a mathematical proof written in LaTeX into the text area.
-4. Click the "Visualize Proof" button.
+4. Click the "Visualize Proof" button. Visualizations should take anywhere from 15-60 seconds depending on the length and complexity of the proof as well as your network.
 5. An interactive, logically-structured graph and a list of key concepts will appear.
 6. Validate: Click "Validate Logic" to check if all steps are sound!
 7. Edit the Graph: Use the "+ Add Step" button to add manual annotations. Drag lines between node handles to create new connections. Select a node/edge and press 'Backspace' to delete it.
