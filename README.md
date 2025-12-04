@@ -114,6 +114,57 @@ Example of a real analysis proof I analyzed for my MATH142A (Intro to Real Analy
 
 Example of a graduate level real analysis proof:
 
+The prompt that I fed ProofViz: 
+
+"\begin{theorem}[Lebesgue Dominated Convergence Theorem]
+Let $(X, \mathcal{M}, \mu)$ be a measure space. Let $\{f_n\}_{n=0}^{\infty}$ be a sequence of measurable functions such that $f_n \to f$ pointwise almost everywhere. If there exists an integrable function $g \in L^1(\mu)$ such that $|f_n(x)| \leq g(x)$ for all $n$ and almost every $x$, then:
+\[
+\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.
+\]
+\end{theorem}
+
+\begin{proof}
+Since $f_n \to f$ a.e. and $|f_n| \leq g$, it follows that $|f| \leq g$ a.e., so $f$ is integrable. We prove the result using \textbf{Fatou's Lemma}, which requires non-negative functions.
+
+\textbf{Step 1: The Lower Bound (Using $g + f_n$)}
+Since $|f_n| \leq g$, we have $g + f_n \geq 0$. We apply Fatou's Lemma to the sequence $(g + f_n)$:
+\[
+\int_X \liminf_{n \to \infty} (g + f_n) \, d\mu \leq \liminf_{n \to \infty} \int_X (g + f_n) \, d\mu.
+\]
+Since $g$ is independent of $n$ and $f_n \to f$:
+\[
+\int_X (g + f) \, d\mu \leq \int_X g \, d\mu + \liminf_{n \to \infty} \int_X f_n \, d\mu.
+\]
+Because $\int g < \infty$, we can subtract it from both sides:
+\begin{equation} \label{eq:lower}
+\int_X f \, d\mu \leq \liminf_{n \to \infty} \int_X f_n \, d\mu.
+\end{equation}
+
+\textbf{Step 2: The Upper Bound (Using $g - f_n$)}
+Similarly, $g - f_n \geq 0$. We apply Fatou's Lemma to $(g - f_n)$:
+\[
+\int_X \liminf_{n \to \infty} (g - f_n) \, d\mu \leq \liminf_{n \to \infty} \int_X (g - f_n) \, d\mu.
+\]
+Using linearity and the fact that $\liminf (-a_n) = -\limsup a_n$:
+\[
+\int_X (g - f) \, d\mu \leq \int_X g \, d\mu - \limsup_{n \to \infty} \int_X f_n \, d\mu.
+\]
+Subtracting $\int g$ and multiplying by $-1$ (which flips the inequality):
+\begin{equation} \label{eq:upper}
+\limsup_{n \to \infty} \int_X f_n \, d\mu \leq \int_X f \, d\mu.
+\end{equation}
+
+\textbf{Conclusion:}
+Combining inequalities \eqref{eq:lower} and \eqref{eq:upper}:
+\[
+\limsup_{n \to \infty} \int_X f_n \, d\mu \leq \int_X f \, d\mu \leq \liminf_{n \to \infty} \int_X f_n \, d\mu.
+\]
+Since the limit inferior is always less than or equal to the limit superior, all terms must be equal. Thus, the limit exists and:
+\[
+\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.
+\]
+\end{proof}"
+
 <img width="1898" height="922" alt="image" src="https://github.com/user-attachments/assets/cd8a05eb-c442-469f-bd36-b4708674079a" />
 
 As you can see, ProofViz can generally handle graduate level proofs with ease.
