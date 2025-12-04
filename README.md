@@ -105,11 +105,18 @@ To clarify complex arguments, you can click on any node. This interactive featur
 
 For example if we click on N13, we see that it highlights its direct dependencies: N6, N12 and N14.
 
+---
+## Examples
+
 Example of a real analysis proof I analyzed for my MATH142A (Intro to Real Analysis) class:
 
 ![Screenshot_1-12-2025_215344_localhost](https://github.com/user-attachments/assets/a5a2cb2a-fa8e-451d-9960-1ecd160578e8)
 
-I personally use ProofViz to study!
+Example of a graduate level real analysis proof:
+
+<img width="1898" height="922" alt="image" src="https://github.com/user-attachments/assets/cd8a05eb-c442-469f-bd36-b4708674079a" />
+
+As you can see, ProofViz can generally handle graduate level proofs with ease.
 
 ---
 ## Proof Logic Validation
