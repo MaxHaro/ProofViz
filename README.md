@@ -108,10 +108,6 @@ For example if we click on N13, we see that it highlights its direct dependencie
 ---
 ## Examples
 
-Example of a real analysis proof I analyzed for my MATH142A (Intro to Real Analysis) class:
-
-![Screenshot_1-12-2025_215344_localhost](https://github.com/user-attachments/assets/a5a2cb2a-fa8e-451d-9960-1ecd160578e8)
-
 Example of a graduate level real analysis proof:
 
 The prompt that I fed ProofViz: 
