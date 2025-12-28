@@ -156,7 +156,7 @@ def process_proof_endpoint():
 
     # --- 3. AI Call & Response Handling ---
     try:
-        model = genai.GenerativeModel('models/gemini-2.5-pro')
+        model = genai.GenerativeModel('models/gemini-3-flash-preview')
         response = model.generate_content(prompt)
         
         # Clean up the response text (removes markdown fences like ```json ... ```)
@@ -202,7 +202,7 @@ def validate_proof_endpoint():
 
     # --- AI Call & Response Handling ---
     try:
-        model = genai.GenerativeModel('models/gemini-2.5-pro')
+        model = genai.GenerativeModel('models/gemini-3-flash-preview')
         response = model.generate_content(prompt)
         
         # Clean up the response text
@@ -248,7 +248,7 @@ def explain_edge_endpoint():
     )
 
     try:
-        model = genai.GenerativeModel('models/gemini-2.5-pro')
+        model = genai.GenerativeModel('models/gemini-3-flash-preview')
         response = model.generate_content(prompt)
         
         # We just want the raw text explanation
